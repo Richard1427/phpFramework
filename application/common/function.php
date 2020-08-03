@@ -1,6 +1,6 @@
 <?php
 	function Write($Obj){
-		echo $Obj;
+		echo "<div>".$Obj."<div>";
 	}
 
 	#将常量中的路径值替换为符合命名空的格式

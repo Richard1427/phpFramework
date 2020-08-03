@@ -18,7 +18,7 @@
 				}else{
 					$this->Control="error";
 				}
-				Unset($UrlArr[0]); 
+				Unset($UrlArr[0]); 				
 			}
 			if(isset($UrlArr[1]) && $UrlArr[1]!=""){
 				if($this->Control!=""){
