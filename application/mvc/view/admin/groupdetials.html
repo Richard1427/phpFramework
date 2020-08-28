@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php include "head.html"?>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <?php include "left.html"?>
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <?php include "header.html"?>
+        
+        <!--body wrapper start-->
+        <div class="wrapper">
+			
+			<div class="row">
+				<div class="col-sm-12">
+					<section class="panel">						
+						<div class="panel-body">
+							<section id="unseen">
+								<table class="table table-bordered table-striped table-condensed">
+									<thead>
+									<tr>
+										<th>编号</th>
+										<th>表名</th>
+										<th class="numeric">新增</th>
+										<th class="numeric">删除</th>
+										<th class="numeric">修改</th>
+										<th class="numeric">查询</th>
+									</tr>
+									</thead>
+									<tbody>
+									<?php
+										foreach($Data as $row){
+									?>
+									<tr>
+										<td><?php echo $row["id"]?></td>
+										<td><?php echo $row["cnname"]?></td>									
+										<td class="numeric">
+											<input type="checkbox" onchange="UpdateGroupdetials(<?php echo $row["id"]?>,'ginsert',this,<?php echo $row["groupid"]?>)" <?php echo $row["ginsert"]=="1"?"checked":""?>>
+										</td>
+										<td class="numeric">
+											<input type="checkbox"  onchange="UpdateGroupdetials(<?php echo $row["id"]?>,'gdelete',this,<?php echo $row["groupid"]?>)" <?php echo $row["gdelete"]=="1"?"checked":""?> >
+										</td>
+										<td class="numeric">
+											<input type="checkbox"  onchange="UpdateGroupdetials(<?php echo $row["id"]?>,'gupdate',this,<?php echo $row["groupid"]?>)" <?php echo $row["gupdate"]=="1"?"checked":""?> >
+										</td>
+										<td class="numeric">
+											<input type="checkbox"  onchange="UpdateGroupdetials(<?php echo $row["id"]?>,'gselect',this,<?php echo $row["groupid"]?>)" <?php echo $row["gselect"]=="1"?"checked":""?> >
+										</td>
+									</tr>
+									<?php
+										}
+									?>
+									</tbody>
+								</table>
+							</section>
+						</div>
+					</section>
+				</div>
+				<div id="err"></div>
+			</div>
+        </div>
+        <!--body wrapper end-->
+
+        <?php include "footer.html"?>
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<?php include "js.html"?>
+
+<script>
+	
+	function UpdateGroupdetials(dataid,_type,obj,_groupid){
+		var _state=0;
+		if(obj.checked){
+			_state=1;
+		}
+		$.post("/admin/groupdetials/update",
+			{
+				id:dataid,
+				type:_type,
+				state:_state,
+				groupid:_groupid
+			},
+			function(data,status){				
+				if(data!="ok"){
+					obj.checked=!obj.checked;
+					$("#err").html(data);
+				}			
+			});
+	}
+
+</script>
+
+</body>
+</html>

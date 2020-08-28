@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php include "head.html"?>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <?php include "left.html"?>
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <?php include "header.html"?>
+        
+        <!--body wrapper start-->
+        <div class="wrapper">
+			
+			<div class="row">
+				<div class="col-sm-12">
+					<section class="panel">						
+						<div class="panel-body">
+							<section id="unseen">
+								<table class="table table-bordered table-striped table-condensed">
+									<thead>
+									<tr>
+										<th>新闻类型</th>
+										<th>标题</th>
+										<th class="numeric">内容</th>
+										<th class="numeric">状态</th>
+										<th class="numeric">点击量</th>
+										<th class="numeric">录入时间</th>
+										<th class="numeric">操作</th>
+									</tr>
+									</thead>
+									<tbody>
+									<?php
+										foreach($list as $row){
+									?>
+									<tr>
+										<td><?php echo $row["datatypeid"]?></td>
+										<td><?php echo $row["title"]?></td>
+										<td><?php echo $row["content"]?></td>
+										<td><?php echo $row["state"]?></td>
+										<td><?php echo $row["hits"]?></td>
+										<td><?php echo $row["adate"]?></td>
+										<td><a href="#" onclick="return DataEdit(<?php echo $row["id"]?>)">
+											<span class="label label-info label-mini">删除</a></td>
+
+									</tr>
+									<?php
+										}
+									?>
+									</tbody>
+								</table>
+							</section>
+						</div>
+					</section>
+				</div>
+				<div id="err"></div>
+			</div>
+        </div>
+        <!--body wrapper end-->
+
+        <?php include "footer.html"?>
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<?php include "js.html"?>
+<script>
+
+	function DataEdit(delid){
+		if(confirm("确定删除吗")){
+			$.post("/admin/adminedit/del",
+					{
+						id:delid
+					},
+					function(data,status){
+						if(data=="ok"){
+							location.href="/admin/adminlist";
+						}else{
+							//alert(data);
+							$("#err").html(data);
+						}
+					});
+		}
+		return false;
+	}
+
+</script>
+</body>
+</html>

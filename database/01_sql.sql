@@ -8,7 +8,7 @@ create table systemtable(
 
 
 #模板
-create table Templates(
+CREATE TABLE Templates(
 	ID int primary key  auto_increment ,#编号	
 	tname varchar(100) default '',#模板名称
 	pic varchar(200) default '',#图片

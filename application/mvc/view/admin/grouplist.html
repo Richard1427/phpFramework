@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php include "head.html"?>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <?php include "left.html"?>
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <?php include "header.html"?>
+        
+        <!--body wrapper start-->
+        <div class="wrapper">
+
+			<div class="row">
+				<div class="col-sm-12">
+					<section class="panel">						
+						<div class="panel-body">
+							<section id="unseen">
+								<table class="table table-bordered table-striped table-condensed">
+									<thead>
+									<tr>
+										<th>编号</th>
+										<th>组名称</th>
+										<th class="numeric">状态</th>
+										<th class="numeric">数量</th>
+										<th class="numeric">录入日期</th>
+										<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+									<?php
+										foreach($list as $row){
+									?>
+									<tr>
+										<td><?php echo $row["id"]?></td>
+										<td><?php echo $row["gname"]?></td>
+										<td class="numeric"><?php echo $row["state"]=="0"?"<span class='label label-danger label-mini'>无效</span>":"<span class='label label-success label-mini'>有效</span>" ?></td>
+										<td class="numeric"><?php echo $row["count"]?></td>
+										<td class="numeric"><?php echo $row["adate"]?></td>
+										<td class="numeric"><a href="#" onclick="return DataEdit(<?php echo $row["id"]?>)"><span class="label label-info label-mini">删除</a></a> <a href="/admin/groupedit?id=<?php echo $row["id"]?>"><span class="label label-warning label-mini">修改权限组名称</span></a> <a href="/admin/groupdetials?id=<?php echo $row["id"]?>"><span class="label label-warning label-mini">修改权限组明细</span></a></td>
+									</tr>
+									<?php
+										}
+									?>
+									</tbody>
+								</table>
+							</section>
+						</div>
+					</section>
+				</div>
+				<div id="err"></div>
+			</div>
+        </div>
+        <!--body wrapper end-->
+
+        <?php include "footer.html"?>
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<?php include "js.html"?>
+
+<script>
+	
+	function DataEdit(delid){
+		if(confirm("确定删除吗")){
+			$.post("/admin/groupedit/del",
+			{
+				id:delid
+			},
+			function(data,status){			
+				if(data=="ok"){
+					location.href="/admin/grouplist";
+				}else{
+					//alert(data);
+					$("#err").html(data);
+				}			
+			});
+		}
+		return false;
+	}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php include "head.html"?>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <?php include "left.html"?>
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <?php include "header.html"?>
+        
+        <!--body wrapper start-->
+        <div class="wrapper">
+
+			<div class="row">
+                <div class="col-lg-12">
+                    <section class="panel">                        
+                        <div class="panel-body">
+                            <form role="form" id="form" onsubmit="return DataEdit()" class="form-horizontal adminex-form">
+                                <input type="hidden" value="<?php echo $Data[0]['id']?>" id="id">
+								<div class="form-group has-success">
+                                    <label class="col-lg-2 control-label">登录名</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" placeholder="" id="aname" value="<?php echo $Data[0]['aname']?>" id="f-name" class="form-control">
+                                    </div>
+                                </div>
+								<div class="form-group has-success">
+                                    <label class="col-lg-2 control-label">密码</label>
+                                    <div class="col-lg-10">
+                                        <input type="password" placeholder="" id="apwd1" value=""  class="form-control">
+                                    </div>
+                                </div>
+								<div class="form-group has-success">
+                                    <label class="col-lg-2 control-label">重复密码</label>
+                                    <div class="col-lg-10">
+                                        <input type="password" placeholder="" id="apwd2" value=""  class="form-control">
+                                    </div>
+                                </div>
+								<div class="form-group has-success">
+                                    <label class="col-lg-2 control-label">权限组名称</label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control m-bot15" id="groupid">
+											<option value="">请选择</option>
+											<?php
+										foreach($GroupList as $row){
+										if($row['id']==$Data[0]['groupid']){
+									?>
+											<option selected value="<?php echo $row['id']?>" ><?php echo $row['gname']?></option>
+											<?php }else{
+											?>
+												<option value="<?php echo $row['id']?>" ><?php echo $row['gname']?></option>
+											<?php }} ?>
+										</select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group has-error">
+                                    <label class="col-lg-2 control-label">状态</label>
+                                    <div class="col-lg-10">
+                                        <select class="form-control m-bot15" id="state">
+											<option value="1"<?php echo $Data[0]['state']=="1"?"selected":""?>>有效</option>
+											<option value="0"<?php echo $Data[0]['state']=="0"?"selected":""?>>无效</option>
+										</select>
+                                    </div>
+                                </div>
+
+								<div id="err"></div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button class="btn btn-primary btnOk" type="submit">保存</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+			
+
+        </div>
+        <!--body wrapper end-->
+
+        <?php include "footer.html"?>
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<?php include "js.html"?>
+
+<script>
+	
+	function DataEdit(){
+		var _pwd1=$("#apwd1").val();
+		var _pwd2=$("#apwd2").val();
+		if(_pwd1!=_pwd2){
+			$("#err").html("两次密码不一致");
+			return false;
+		}
+
+
+		$(".btnOk").attr("disabled",true);  //禁用提交按钮
+		
+		$.post("/admin/adminedit/submit",
+		{
+			id:$("#id").val(),
+			aname:$("#aname").val(),
+			apwd:$("#apwd1").val(),
+			groupid:$("#groupid").val(),
+			state:$("#state").val()
+		},
+		function(data,status){			
+			if(data=="ok"){
+				if($("#id").val()=="0"){
+					//location.href="/admin/groupedit";
+					$("#form")[0].reset();
+					$("#err").html("新增成功");
+				}else{
+					location.href="/admin/adminedit";
+				}
+			}else{
+				//alert(data);
+				$("#err").html(data);
+			}
+			$(".btnOk").attr("disabled",false);
+		});
+		return false;
+	}
+
+</script>
+
+</body>
+</html>
